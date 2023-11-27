@@ -67,7 +67,7 @@ sudo apt-get install nodejs -y
 
 Steps divided in two parts part A for backend and part B for frontend
 
-PART - A, Deploy backend
+**************************PART - A, Deploy backend**************************
 
 cd into backend folder
 
@@ -132,3 +132,63 @@ http://publi_ip:80
 output should be - Cannot GET /
 
 Which verifies that load balancer is set correctly.
+
+**************************PART - B, Deploy frontend**************************
+
+cd into FrontEnd folder
+
+```
+cd TravelMemory/Frontend/src
+```
+change the url.js file with the new private ip where backend is deployed
+```
+vim url.js
+
+# export const baseUrl = "http://privateIP:80"
+```
+change directory to frontend
+```
+cd ..
+```
+
+initialize npm, install to get dependencies and then start the server
+
+```
+npm init -y
+
+npm install
+
+npm start
+```
+Checked webbrowser, for http://localhost:3000
+
+Installing Nginx and doing reverse proxy to http://localhost:3000
+```
+sudo apt install nginx -y
+
+sudo systemctl start nginx
+
+sudo systemctl enable nginx
+```
+Change the sites-available/default file
+
+```
+sudo vim /etc/nginx/sites-available/default
+#add below in the file
+
+location /some/path/ {
+    proxy_pass http://localhost:3000;
+}
+```
+restart nginx server
+
+```
+sudo systemctl nginx
+
+````
+
+Now test public ip for EC2
+
+http://publi_ip:80
+
+****************************************************************************END******************************************************
