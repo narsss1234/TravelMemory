@@ -24,3 +24,18 @@ Data format to be added:
     "featured": true
 }
 ```
+Solution:
+
+Create an account and deploy a cluster on MongoDB
+Once deployed create a login credentials of read and write permission
+Use MongoDBCompass to test the login URL
+
+Create two Ec2 instance - preferred Amazon linux 2023 - named - Satya_TM_FE, and Satya_TM_BE
+
+install git on  both the instance
+
+Data format to be added: 
+
+```shell
+sudo yum install git -y
+```
