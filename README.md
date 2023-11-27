@@ -50,10 +50,27 @@ git clone https://github.com/CharismaticOwl/TravelMemory.git
 ```
 Install nodejs and npm on both the instances
 ```
-
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+```
+version 18.x or later
+```
+NODE_MAJOR=18
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+```
+```
+sudo apt-get update
+sudo apt-get install nodejs -y
 ```
 
 Steps divided in two parts part A for backend and part B for frontend
 
-PART - A, Deplo backend
+PART - A, Deploy backend
 
+cd into backend folder
+
+```
+cd TravelMemory/Backend
+```
