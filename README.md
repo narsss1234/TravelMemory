@@ -28,6 +28,9 @@ Solution:
 
 Create an account and deploy a cluster on MongoDB
 Once deployed create a login credentials of read and write permission
+
+Netwrok Access was added as 0.0.0.0/0, so that it an be access from anywhere
+
 Use MongoDBCompass to test the login URL
 
 Create two Ec2 instance - preferred Ubuntu - named - Satya_TM_FE, and Satya_TM_BE
@@ -114,7 +117,7 @@ Change the sites-available/default file
 sudo vim /etc/nginx/sites-available/default
 #add below in the file
 
-location /some/path/ {
+location / {
     proxy_pass http://localhost:3000;
 }
 ```
@@ -176,7 +179,7 @@ Change the sites-available/default file
 sudo vim /etc/nginx/sites-available/default
 #add below in the file
 
-location /some/path/ {
+location / {
     proxy_pass http://localhost:3000;
 }
 ```
@@ -191,4 +194,143 @@ Now test public ip for EC2
 
 http://publi_ip:80
 
-****************************************************************************END******************************************************
+-------------------------------------------------------------
+Created multiple instances for both frontend and backend application
+
+Front end instances
+```
+Satya_TM_FE, Satya_TM_FE_2
+i-08e89729efed24ff5, i-09e9494ebbcec8b1e
+
+3.228.13.96, 54.160.23.153 - public IP
+10.2.0.98, 10.2.0.84 - private IP
+```
+
+Back end instances
+```
+Satya_TM_BE, Satya_TM_BE_2
+i-043feb4666fd6d8bc, i-0c51352d9bee4f414
+
+3.236.137.244, 3.239.41.128 - public ip
+10.2.4.38, 10.2.9.59 - private ip
+```
+Tested and verified that the instances
+
+Modified the code in Frontend index.html page
+
+```
+cd TravelMemory/frontend/public
+
+ls
+
+vim index.html
+```
+
+Change the title name for Satya_TM_FE as React app 1 and for Satya_TM_FE_2 as React app 2
+---------------------------------------------------------
+Create Target Group for frontend server
+
+Named it - SatyaTravelMemoryFrontend-TG
+
+ARN - arn:aws:elasticloadbalancing:us-east-1:295397358094:targetgroup/SatyaTravelMemoryFrontend-TG/f5489431b52d1b27
+
+Added the front end instances in the target list
+
+Save
+--------------------------------------------------------
+
+Create Load Balancer so that a Load balancer dns is created and then traffic can be handled by AWS.
+
+Named it - SatyaTravelMemoryFrontend-LB
+DNS - SatyaTravelMemoryFrontend-LB-547693369.us-east-1.elb.amazonaws.com
+ARN - arn:aws:elasticloadbalancing:us-east-1:295397358094:loadbalancer/app/SatyaTravelMemoryFrontend-LB/759e16044e474555
+
+The load balancer is listening at 80, and target group should be set to SatyaTravelMemoryFrontend-TG
+
+Tested and verified that DNS for load balancer is woking and also it is choosing between the app server, as the title name change proves it, React app 1 and React app 2
+
+---------------------------------------------------------
+Bought a website from godaddy.com
+
+Name of the website - 
+```xyzolo.shop```
+
+--------------------------------------------------------
+
+Configure Amazon Route 53 with the new website
+
+Navigate to Amazon Route53
+
+Create new Hosted Zone
+
+Add domain name 
+```
+xyzolo.shop
+```
+
+Give a description
+
+Keep the option "public hosted zone" checked
+
+Create Hosted Zone
+
+Copy the four nameservers, excluding the "." at the end 
+
+And go to Godaddy, DNS management
+
+Replace the old nameservers with the ones copied from route 53
+
+Save, this will take some time update.
+
+Meanwhile
+
+In route53, create new records for Aname and Cname
+
+Create record
+
+do not add subdomain, make the selection as A record
+
+Select the alias option
+
+Choose the endpoint as alias to Application and classic load balancer
+set region
+selection the load balancer DNS name
+
+Create Records
+
+Create a new record for C name
+
+set the subdomain
+tm.xyzolo.shop
+
+select the record type CAAA - name
+
+Added the value as xyzolo.shop
+
+----------------------------------------
+
+After a few minutes the website is live.
+
+-----------------------------------------
+Now configuring cloudflare to help protect from DDos attacks
+
+Create e clous flare account
+
+Added the website name in the Home page
+
+Select the Package, selected free tier here
+
+Cloudflare will automatically import the redirection ips for the loadbalancer
+
+Leave them the way, hit continue
+
+We will see few steps to replace the name server in the DNs management
+
+Copy the new name servers in the godaddy DNS management
+
+This will take some time to load
+
+Once the setup is complete, the instructions that is being shown is removed, and it will show you a confimration message, that the cloudflare is setup correctly.
+
+-------------------------------------------
+Tested rigoursly and attached Screenshots to the assignment
