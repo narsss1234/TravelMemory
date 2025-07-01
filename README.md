@@ -1,3 +1,4 @@
+Author/Owner: narsss1234
 # Travel Memory
 
 `.env` file to work with the backend:
